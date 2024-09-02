@@ -9,7 +9,7 @@ import {NoFileOptions} from './constants';
 export function getVsTestPath(): string {
   let vstestLocationMethod = core.getInput('vstestLocationMethod')
   if(vstestLocationMethod && vstestLocationMethod.toUpperCase() === "LOCATION") {
-    return core.getInput('vstestLocation')
+    return `"${core.getInput('vstestLocation')}"`;
   }
 
   let vsTestVersion = core.getInput('vsTestVersion')

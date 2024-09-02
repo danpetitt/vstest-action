@@ -1114,7 +1114,7 @@ const path = __importStar(__webpack_require__(622));
 function getVsTestPath() {
     let vstestLocationMethod = core.getInput('vstestLocationMethod');
     if (vstestLocationMethod && vstestLocationMethod.toUpperCase() === "LOCATION") {
-        return core.getInput('vstestLocation');
+        return `"${core.getInput('vstestLocation')}"`;
     }
     let vsTestVersion = core.getInput('vsTestVersion');
     if (vsTestVersion && vsTestVersion === "14.0") {
