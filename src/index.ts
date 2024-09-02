@@ -19,6 +19,7 @@ export async function run() {
     });
 
     let vstestLocationMethod = core.getInput('vstestLocationMethod');
+    core.info(`vstestLocationMethod:` + vstestLocationMethod)
     if(vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
       core.info(`Downloading test tools...`);
       let workerZipPath = path.join(__dirname, 'win-x64.zip')
@@ -35,8 +36,10 @@ export async function run() {
     let args = getArguments();
     core.debug(`Arguments: ${args}`);
 
+    let testTool = `${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`;
     core.info(`Running tests...`);
-    await exec.exec(`${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`);
+    core.info(testTool);
+    await exec.exec(testTool);
   } catch (err) {
     core.setFailed(err.message)
   }

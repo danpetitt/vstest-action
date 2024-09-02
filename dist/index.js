@@ -4854,6 +4854,7 @@ function run() {
                 core.debug(`${file}`);
             });
             let vstestLocationMethod = core.getInput('vstestLocationMethod');
+            core.info(`vstestLocationMethod:` + vstestLocationMethod)
             if(vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
               core.info(`Downloading test tools...`);
               let workerZipPath = path.join(__dirname, 'win-x64.zip');
@@ -4866,8 +4867,10 @@ function run() {
             core.debug(`VsTestPath: ${vsTestPath}`);
             let args = getArguments_1.getArguments();
             core.debug(`Arguments: ${args}`);
+            let testTool = `${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`;
             core.info(`Running tests...`);
-            yield exec.exec(`${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`);
+            core.info(testTool);
+            yield exec.exec(testTool);
         }
         catch (err) {
             core.setFailed(err.message);
