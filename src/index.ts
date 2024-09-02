@@ -18,13 +18,16 @@ export async function run() {
       core.debug(`${file}`)
     });
 
-    core.info(`Downloading test tools...`);
-    let workerZipPath = path.join(__dirname, 'win-x64.zip')
-    await exec.exec(`powershell Invoke-WebRequest -Uri "https://aka.ms/local-worker-win-x64" -OutFile ${workerZipPath}`);
+    let vstestLocationMethod = core.getInput('vstestLocationMethod');
+    if(vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
+      core.info(`Downloading test tools...`);
+      let workerZipPath = path.join(__dirname, 'win-x64.zip')
+      await exec.exec(`powershell Invoke-WebRequest -Uri "https://aka.ms/local-worker-win-x64" -OutFile ${workerZipPath}`);
 
-    core.info(`Unzipping test tools...`);
-    core.debug(`workerZipPath is ${workerZipPath}`);
-    await exec.exec(`powershell Expand-Archive -Path ${workerZipPath} -DestinationPath ${__dirname}`);
+      core.info(`Unzipping test tools...`);
+      core.debug(`workerZipPath is ${workerZipPath}`);
+      await exec.exec(`powershell Expand-Archive -Path ${workerZipPath} -DestinationPath ${__dirname}`);
+    }
 
     let vsTestPath = getVsTestPath();
     core.debug(`VsTestPath: ${vsTestPath}`);
