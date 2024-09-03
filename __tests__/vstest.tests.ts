@@ -71,7 +71,7 @@ describe('vstest Action Unit Tests', ()=>{
 
     it("test getArguments with all expected inputs", async () => {
 
-        const expectedResult = '/TestCaseFilter:testFilterCriteria /Settings:runSettingsFile /TestAdapterPath:pathToCustomTestAdapters /Parallel /InIsolation /EnableCodeCoverage /Platform:x64 otherConsoleOptions '
+        const expectedResult = '/TestCaseFilter:testFilterCriteria /Settings:runSettingsFile /TestAdapterPath:pathToCustomTestAdapters /Parallel /InIsolation /EnableCodeCoverage /Platform:x64 otherConsoleOptions'
         jest.mock('@actions/core');
         jest.spyOn(core,'debug');
         jest.spyOn(core, 'info');

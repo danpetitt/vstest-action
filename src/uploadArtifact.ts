@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import {create, UploadOptions} from '@actions/artifact';
+import {DefaultArtifactClient, UploadArtifactOptions, UploadArtifactResponse} from '@actions/artifact';
 import {findFilesToUpload} from './search';
 import {getInputs} from './input-helper';
 import {NoFileOptions} from './constants';
@@ -44,29 +44,27 @@ export async function uploadArtifact() {
         );
       }
 
-      const artifactClient = create();
-      const options: UploadOptions = {
-        continueOnError: false
-      }
+      const artifactClient = new DefaultArtifactClient();
+      const options: UploadArtifactOptions = {
+        compressionLevel: 1,
+       };
       if (inputs.retentionDays) {
         options.retentionDays = inputs.retentionDays;
       }
 
-      const uploadResponse = await artifactClient.uploadArtifact(
+      const uploadResponse: UploadArtifactResponse = await artifactClient.uploadArtifact(
         inputs.artifactName,
         searchResult.filesToUpload,
         searchResult.rootDirectory,
         options
       );
 
-      if (uploadResponse.failedItems.length > 0) {
-        core.setFailed(
-          `An error was encountered when uploading ${uploadResponse.artifactName}. There were ${uploadResponse.failedItems.length} items that failed to upload.`
+      if (uploadResponse.id) {
+        core.info(
+          `Artifact ${inputs.artifactName} has been successfully uploaded!`
         );
       } else {
-        core.info(
-          `Artifact ${uploadResponse.artifactName} has been successfully uploaded!`
-        );
+        core.setFailed(`Artifact ${inputs.artifactName} failed to upload`);
       }
     }
   } catch (err: unknown) {
