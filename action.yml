@@ -55,7 +55,7 @@ inputs:
     required: false
 
   resultLogsArtifactName:
-    description: "Test result logs artifact name"
+    description: "Test result logs artifact name, add {{current-date}} or {{current-time}} to the name to include date or time in the artifact name"
     required: true
     default: "vs-test-result-logs"
 

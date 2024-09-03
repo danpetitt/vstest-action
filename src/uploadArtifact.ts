@@ -44,6 +44,7 @@ export async function uploadArtifact() {
         );
       }
 
+      const filename = replaceTags(inputs.artifactName);
       const artifactClient = new DefaultArtifactClient();
       const options: UploadArtifactOptions = {
         compressionLevel: 1,
@@ -53,7 +54,7 @@ export async function uploadArtifact() {
       }
 
       const uploadResponse: UploadArtifactResponse = await artifactClient.uploadArtifact(
-        inputs.artifactName,
+        filename,
         searchResult.filesToUpload,
         searchResult.rootDirectory,
         options
@@ -61,13 +62,20 @@ export async function uploadArtifact() {
 
       if (uploadResponse.id) {
         core.info(
-          `Artifact ${inputs.artifactName} has been successfully uploaded!`
+          `Artifact ${filename} has been successfully uploaded!`
         );
       } else {
-        core.setFailed(`Artifact ${inputs.artifactName} failed to upload`);
+        core.setFailed(`Artifact ${filename} failed to upload`);
       }
     }
   } catch (err: unknown) {
     core.setFailed((err as Error).message);
   }
+}
+
+function replaceTags(value: string): string {
+  const date = new Date().toISOString();
+
+  return value.replace(/\{\{current-date\}\}/g, date.substring(0, 10))
+    .replace(/\{\{current-time\}\}/g, date.substring(11, 8));
 }

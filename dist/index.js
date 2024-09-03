@@ -99978,6 +99978,7 @@ async function uploadArtifact() {
           `There are over 10,000 files in this artifact, consider create an archive before upload to improve the upload performance.`
         );
       }
+      const filename = replaceTags(inputs.artifactName);
       const artifactClient = new import_artifact.DefaultArtifactClient();
       const options = {
         compressionLevel: 1
@@ -99986,22 +99987,26 @@ async function uploadArtifact() {
         options.retentionDays = inputs.retentionDays;
       }
       const uploadResponse = await artifactClient.uploadArtifact(
-        inputs.artifactName,
+        filename,
         searchResult.filesToUpload,
         searchResult.rootDirectory,
         options
       );
       if (uploadResponse.id) {
         core2.info(
-          `Artifact ${inputs.artifactName} has been successfully uploaded!`
+          `Artifact ${filename} has been successfully uploaded!`
         );
       } else {
-        core2.setFailed(`Artifact ${inputs.artifactName} failed to upload`);
+        core2.setFailed(`Artifact ${filename} failed to upload`);
       }
     }
   } catch (err) {
     core2.setFailed(err.message);
   }
+}
+function replaceTags(value) {
+  const date = (/* @__PURE__ */ new Date()).toISOString();
+  return value.replace(/\{\{current-date\}\}/g, date.substring(0, 10)).replace(/\{\{current-time\}\}/g, date.substring(11, 8));
 }
 
 // src/getTestAssemblies.ts
