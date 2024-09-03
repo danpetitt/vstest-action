@@ -100005,8 +100005,9 @@ async function uploadArtifact() {
   }
 }
 function replaceTags(value) {
-  const date = (/* @__PURE__ */ new Date()).toISOString();
-  return value.replace(/\{\{current-date\}\}/g, date.substring(0, 10)).replace(/\{\{current-time\}\}/g, date.substring(11, 8));
+  const dt = (/* @__PURE__ */ new Date()).toISOString();
+  const [date, time] = dt.split("T");
+  return value.replace(/\{\{current-date\}\}/g, date).replace(/\{\{current-time\}\}/g, time.substring(0, 8));
 }
 
 // src/getTestAssemblies.ts

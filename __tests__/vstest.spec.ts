@@ -1,4 +1,4 @@
-import {create, UploadOptions,UploadResponse} from '@actions/artifact'
+import {DefaultArtifactClient, UploadArtifactOptions, UploadArtifactResponse} from '@actions/artifact'
 import * as glob from '@actions/glob'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
