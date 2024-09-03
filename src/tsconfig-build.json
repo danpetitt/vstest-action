@@ -1,0 +1,26 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "rootDir": "./",
+    "outDir": "../dist",
+    "sourceMap": false,
+    "types": [
+      "node",
+      "jest"
+    ],
+    "strict": false,
+    "esModuleInterop": true
+  },
+  "include": [
+    "./**/*",
+    "./**/*.json"
+  ],
+  "exclude": [
+    "tsconfig.json",
+    "tsconfig-build.json"
+  ],
+  "references": []
+}
