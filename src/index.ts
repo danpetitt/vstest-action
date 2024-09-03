@@ -40,15 +40,15 @@ export async function run() {
     core.info(`Running tests...`);
     core.info(testTool);
     await exec.exec(testTool);
-  } catch (err) {
-    core.setFailed(err.message)
+  } catch (err: unknown) {
+    core.setFailed((err as Error).message)
   }
 
   // Always attempt to upload test result artifact
   try {
     await uploadArtifact();
-  } catch (err) {
-    core.setFailed(err.message)
+  } catch (err: unknown) {
+    core.setFailed((err as Error).message)
   }
 }
 

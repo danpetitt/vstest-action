@@ -10,8 +10,8 @@ export async function getTestAssemblies(): Promise<string[]> {
     const searchResult = await findFilesToUpload(searchFolder + testAssembly)
     
     return searchResult.filesToUpload
-  } catch (err) {
-    core.setFailed(err.message)
+  } catch (err: unknown) {
+    core.setFailed((err as Error).message)
   }
   return []
 }

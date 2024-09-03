@@ -19,7 +19,13 @@ module.exports =
 /******/ 		};
 /******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete installedModules[moduleId];
+/******/ 		}
 /******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -1090,7 +1096,11 @@ function onceStrict (fn) {
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1103,12 +1113,12 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVsTestPath = void 0;
+exports.getVsTestPath = getVsTestPath;
 const core = __importStar(__webpack_require__(470));
 const path = __importStar(__webpack_require__(622));
 function getVsTestPath() {
@@ -1125,7 +1135,6 @@ function getVsTestPath() {
     }
     return path.join(__dirname, 'win-x64/VsTest/v160/Common7/IDE/Extensions/TestPlatform/vstest.console.exe');
 }
-exports.getVsTestPath = getVsTestPath;
 
 
 /***/ }),
@@ -2453,7 +2462,11 @@ module.exports = require("child_process");
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -2466,12 +2479,12 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getArguments = void 0;
+exports.getArguments = getArguments;
 const core = __importStar(__webpack_require__(470));
 function getArguments() {
     let args = '';
@@ -2509,7 +2522,6 @@ function getArguments() {
     }
     return args;
 }
-exports.getArguments = getArguments;
 
 
 /***/ }),
@@ -4807,7 +4819,11 @@ if (typeof Object.create === 'function') {
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -4820,7 +4836,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -4834,7 +4850,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.run = void 0;
+exports.run = run;
 const core = __importStar(__webpack_require__(470));
 const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
@@ -4845,7 +4861,7 @@ const getVsTestPath_1 = __webpack_require__(81);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let testFiles = yield getTestAssemblies_1.getTestAssemblies();
+            let testFiles = yield (0, getTestAssemblies_1.getTestAssemblies)();
             if (testFiles.length == 0) {
                 throw new Error('No matched test files!');
             }
@@ -4854,18 +4870,18 @@ function run() {
                 core.debug(`${file}`);
             });
             let vstestLocationMethod = core.getInput('vstestLocationMethod');
-            core.info(`vstestLocationMethod:` + vstestLocationMethod)
-            if(vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
-              core.info(`Downloading test tools...`);
-              let workerZipPath = path.join(__dirname, 'win-x64.zip');
-              yield exec.exec(`powershell Invoke-WebRequest -Uri "https://aka.ms/local-worker-win-x64" -OutFile ${workerZipPath}`);
-              core.info(`Unzipping test tools...`);
-              core.debug(`workerZipPath is ${workerZipPath}`);
-              yield exec.exec(`powershell Expand-Archive -Path ${workerZipPath} -DestinationPath ${__dirname}`);
+            core.info(`vstestLocationMethod:` + vstestLocationMethod);
+            if (vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
+                core.info(`Downloading test tools...`);
+                let workerZipPath = path.join(__dirname, 'win-x64.zip');
+                yield exec.exec(`powershell Invoke-WebRequest -Uri "https://aka.ms/local-worker-win-x64" -OutFile ${workerZipPath}`);
+                core.info(`Unzipping test tools...`);
+                core.debug(`workerZipPath is ${workerZipPath}`);
+                yield exec.exec(`powershell Expand-Archive -Path ${workerZipPath} -DestinationPath ${__dirname}`);
             }
-            let vsTestPath = getVsTestPath_1.getVsTestPath();
+            let vsTestPath = (0, getVsTestPath_1.getVsTestPath)();
             core.debug(`VsTestPath: ${vsTestPath}`);
-            let args = getArguments_1.getArguments();
+            let args = (0, getArguments_1.getArguments)();
             core.debug(`Arguments: ${args}`);
             let testTool = `${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`;
             core.info(`Running tests...`);
@@ -4877,14 +4893,13 @@ function run() {
         }
         // Always attempt to upload test result artifact
         try {
-            yield uploadArtifact_1.uploadArtifact();
+            yield (0, uploadArtifact_1.uploadArtifact)();
         }
         catch (err) {
             core.setFailed(err.message);
         }
     });
 }
-exports.run = run;
 run();
 
 
@@ -5191,7 +5206,11 @@ exports.Path = Path;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -5204,7 +5223,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -5218,7 +5237,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTestAssemblies = void 0;
+exports.getTestAssemblies = getTestAssemblies;
 const core = __importStar(__webpack_require__(470));
 const search_1 = __webpack_require__(575);
 function getTestAssemblies() {
@@ -5227,7 +5246,7 @@ function getTestAssemblies() {
             let searchFolder = core.getInput('searchFolder');
             let testAssembly = core.getInput('testAssembly');
             core.debug(`Pattern to search test assemblies: ${searchFolder + testAssembly}`);
-            const searchResult = yield search_1.findFilesToUpload(searchFolder + testAssembly);
+            const searchResult = yield (0, search_1.findFilesToUpload)(searchFolder + testAssembly);
             return searchResult.filesToUpload;
         }
         catch (err) {
@@ -5236,7 +5255,6 @@ function getTestAssemblies() {
         return [];
     });
 }
-exports.getTestAssemblies = getTestAssemblies;
 
 
 /***/ }),
@@ -7203,7 +7221,11 @@ exports.HttpClient = HttpClient;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -7216,7 +7238,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -7230,7 +7252,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadArtifact = void 0;
+exports.uploadArtifact = uploadArtifact;
 const core = __importStar(__webpack_require__(470));
 const artifact_1 = __webpack_require__(214);
 const search_1 = __webpack_require__(575);
@@ -7239,8 +7261,8 @@ const constants_1 = __webpack_require__(694);
 function uploadArtifact() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const inputs = input_helper_1.getInputs();
-            const searchResult = yield search_1.findFilesToUpload(inputs.searchPath);
+            const inputs = (0, input_helper_1.getInputs)();
+            const searchResult = yield (0, search_1.findFilesToUpload)(inputs.searchPath);
             if (searchResult.filesToUpload.length === 0) {
                 // No files were found, different use cases warrant different types of behavior if nothing is found
                 switch (inputs.ifNoFilesFound) {
@@ -7265,7 +7287,7 @@ function uploadArtifact() {
                 if (searchResult.filesToUpload.length > 10000) {
                     core.warning(`There are over 10,000 files in this artifact, consider create an archive before upload to improve the upload performance.`);
                 }
-                const artifactClient = artifact_1.create();
+                const artifactClient = (0, artifact_1.create)();
                 const options = {
                     continueOnError: false
                 };
@@ -7286,7 +7308,6 @@ function uploadArtifact() {
         }
     });
 }
-exports.uploadArtifact = uploadArtifact;
 
 
 /***/ }),
@@ -7677,7 +7698,11 @@ function rmkidsSync (p, options) {
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -7690,7 +7715,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -7704,14 +7729,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findFilesToUpload = void 0;
+exports.findFilesToUpload = findFilesToUpload;
 const glob = __importStar(__webpack_require__(281));
 const path = __importStar(__webpack_require__(622));
 const core_1 = __webpack_require__(470);
 const fs_1 = __webpack_require__(747);
 const path_1 = __webpack_require__(622);
 const util_1 = __webpack_require__(669);
-const stats = util_1.promisify(fs_1.stat);
+const stats = (0, util_1.promisify)(fs_1.stat);
 function getDefaultGlobOptions() {
     return {
         followSymbolicLinks: true,
@@ -7737,7 +7762,7 @@ function getMultiPathLCA(searchPaths) {
     let smallestPathLength = Number.MAX_SAFE_INTEGER;
     // split each of the search paths using the platform specific separator
     for (const searchPath of searchPaths) {
-        core_1.debug(`Using search path ${searchPath}`);
+        (0, core_1.debug)(`Using search path ${searchPath}`);
         const splitSearchPath = path.normalize(searchPath).split(path.sep);
         // keep track of the smallest path length so that we don't accidentally later go out of bounds
         smallestPathLength = Math.min(smallestPathLength, splitSearchPath.length);
@@ -7788,26 +7813,26 @@ function findFilesToUpload(searchPath, globOptions) {
             const fileStats = yield stats(searchResult);
             // isDirectory() returns false for symlinks if using fs.lstat(), make sure to use fs.stat() instead
             if (!fileStats.isDirectory()) {
-                core_1.debug(`File:${searchResult} was found using the provided searchPath`);
+                (0, core_1.debug)(`File:${searchResult} was found using the provided searchPath`);
                 searchResults.push(searchResult);
                 // detect any files that would be overwritten because of case insensitivity
                 if (set.has(searchResult.toLowerCase())) {
-                    core_1.info(`Uploads are case insensitive: ${searchResult} was detected that it will be overwritten by another file with the same path`);
+                    (0, core_1.info)(`Uploads are case insensitive: ${searchResult} was detected that it will be overwritten by another file with the same path`);
                 }
                 else {
                     set.add(searchResult.toLowerCase());
                 }
             }
             else {
-                core_1.debug(`Removing ${searchResult} from rawSearchResults because it is a directory`);
+                (0, core_1.debug)(`Removing ${searchResult} from rawSearchResults because it is a directory`);
             }
         }
         // Calculate the root directory for the artifact using the search paths that were utilized
         const searchPaths = globCreationResult.getSearchPaths();
         if (searchPaths.length > 1) {
-            core_1.info(`Multiple search paths detected. Calculating the least common ancestor of all paths`);
+            (0, core_1.info)(`Multiple search paths detected. Calculating the least common ancestor of all paths`);
             const lcaSearchPath = getMultiPathLCA(searchPaths);
-            core_1.info(`The least common ancestor is ${lcaSearchPath}. This will be the root directory of the artifact`);
+            (0, core_1.info)(`The least common ancestor is ${lcaSearchPath}. This will be the root directory of the artifact`);
             return {
                 filesToUpload: searchResults,
                 rootDirectory: lcaSearchPath
@@ -7820,7 +7845,7 @@ function findFilesToUpload(searchPath, globOptions) {
         if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
             return {
                 filesToUpload: searchResults,
-                rootDirectory: path_1.dirname(searchResults[0])
+                rootDirectory: (0, path_1.dirname)(searchResults[0])
             };
         }
         return {
@@ -7829,7 +7854,6 @@ function findFilesToUpload(searchPath, globOptions) {
         };
     });
 }
-exports.findFilesToUpload = findFilesToUpload;
 
 
 /***/ }),
@@ -7841,7 +7865,11 @@ exports.findFilesToUpload = findFilesToUpload;
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -7854,12 +7882,12 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInputs = void 0;
+exports.getInputs = getInputs;
 const core = __importStar(__webpack_require__(470));
 const constants_1 = __webpack_require__(694);
 /**
@@ -7887,7 +7915,6 @@ function getInputs() {
     }
     return inputs;
 }
-exports.getInputs = getInputs;
 
 
 /***/ }),
@@ -9039,7 +9066,7 @@ var Inputs;
     Inputs["Name"] = "resultLogsArtifactName";
     Inputs["IfNoFilesFound"] = "ifNoFilesFound";
     Inputs["RetentionDays"] = "retentionDays";
-})(Inputs = exports.Inputs || (exports.Inputs = {}));
+})(Inputs || (exports.Inputs = Inputs = {}));
 var NoFileOptions;
 (function (NoFileOptions) {
     /**
@@ -9054,7 +9081,7 @@ var NoFileOptions;
      * Do not output any warnings or errors, the action does not fail
      */
     NoFileOptions["ignore"] = "ignore";
-})(NoFileOptions = exports.NoFileOptions || (exports.NoFileOptions = {}));
+})(NoFileOptions || (exports.NoFileOptions = NoFileOptions = {}));
 
 
 /***/ }),
