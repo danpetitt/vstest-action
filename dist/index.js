@@ -1122,11 +1122,11 @@ exports.getVsTestPath = getVsTestPath;
 const core = __importStar(__webpack_require__(470));
 const path = __importStar(__webpack_require__(622));
 function getVsTestPath() {
-    let vstestLocationMethod = core.getInput('vstestLocationMethod');
+    const vstestLocationMethod = core.getInput('vstestLocationMethod');
     if (vstestLocationMethod && vstestLocationMethod.toUpperCase() === "LOCATION") {
         return `"${core.getInput('vstestLocation')}"`;
     }
-    let vsTestVersion = core.getInput('vsTestVersion');
+    const vsTestVersion = core.getInput('vsTestVersion');
     if (vsTestVersion && vsTestVersion === "14.0") {
         return path.join(__dirname, 'win-x64/VsTest/v140/vstest.console.exe');
     }
@@ -2491,40 +2491,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getArguments = getArguments;
 const core = __importStar(__webpack_require__(470));
 function getArguments() {
-    let args = '';
-    let testFiltercriteria = core.getInput('testFiltercriteria');
+    const args = [];
+    const testFiltercriteria = core.getInput('testFiltercriteria');
     if (testFiltercriteria) {
-        args += `/TestCaseFilter:${testFiltercriteria} `;
+        args.push(`/TestCaseFilter:${testFiltercriteria}`);
     }
-    let runSettingsFile = core.getInput('runSettingsFile');
+    const runSettingsFile = core.getInput('runSettingsFile');
     if (runSettingsFile) {
-        args += `/Settings:${runSettingsFile} `;
+        args.push(`/Settings:${runSettingsFile}`);
     }
-    let pathToCustomTestAdapters = core.getInput('pathToCustomTestAdapters');
+    const pathToCustomTestAdapters = core.getInput('pathToCustomTestAdapters');
     if (pathToCustomTestAdapters) {
-        args += `/TestAdapterPath:${pathToCustomTestAdapters} `;
+        args.push(`/TestAdapterPath:${pathToCustomTestAdapters}`);
     }
-    let runInParallel = core.getInput('runInParallel');
+    const runInParallel = core.getInput('runInParallel');
     if (runInParallel && runInParallel.toUpperCase() === "TRUE") {
-        args += `/Parallel `;
+        args.push(`/Parallel`);
     }
-    let runTestsInIsolation = core.getInput('runTestsInIsolation');
+    const runTestsInIsolation = core.getInput('runTestsInIsolation');
     if (runTestsInIsolation && runTestsInIsolation.toUpperCase() === "TRUE") {
-        args += `/InIsolation `;
+        args.push(`/InIsolation`);
     }
-    let codeCoverageEnabled = core.getInput('codeCoverageEnabled');
+    const codeCoverageEnabled = core.getInput('codeCoverageEnabled');
     if (codeCoverageEnabled && codeCoverageEnabled.toUpperCase() === "TRUE") {
-        args += `/EnableCodeCoverage `;
+        args.push(`/EnableCodeCoverage`);
     }
-    let platform = core.getInput('platform');
+    const platform = core.getInput('platform');
     if (platform && (platform === "x86" || platform === "x64" || platform === "ARM")) {
-        args += `/Platform:${platform} `;
+        args.push(`/Platform:${platform}`);
     }
-    let otherConsoleOptions = core.getInput('otherConsoleOptions');
+    const otherConsoleOptions = core.getInput('otherConsoleOptions');
     if (otherConsoleOptions) {
-        args += `${otherConsoleOptions} `;
+        args.push(`${otherConsoleOptions}`);
     }
-    return args;
+    return args.join(' ');
 }
 
 
@@ -4865,7 +4865,7 @@ const getVsTestPath_1 = __webpack_require__(81);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let testFiles = yield (0, getTestAssemblies_1.getTestAssemblies)();
+            const testFiles = yield (0, getTestAssemblies_1.getTestAssemblies)();
             if (testFiles.length == 0) {
                 throw new Error('No matched test files!');
             }
@@ -4873,8 +4873,8 @@ function run() {
             testFiles.forEach(function (file) {
                 core.debug(`${file}`);
             });
-            let vstestLocationMethod = core.getInput('vstestLocationMethod');
-            core.info(`vstestLocationMethod:` + vstestLocationMethod);
+            const vstestLocationMethod = core.getInput('vstestLocationMethod');
+            ;
             if (vstestLocationMethod && vstestLocationMethod.toUpperCase() !== "LOCATION") {
                 core.info(`Downloading test tools...`);
                 let workerZipPath = path.join(__dirname, 'win-x64.zip');
@@ -4883,14 +4883,12 @@ function run() {
                 core.debug(`workerZipPath is ${workerZipPath}`);
                 yield exec.exec(`powershell Expand-Archive -Path ${workerZipPath} -DestinationPath ${__dirname}`);
             }
-            let vsTestPath = (0, getVsTestPath_1.getVsTestPath)();
+            const vsTestPath = (0, getVsTestPath_1.getVsTestPath)();
             core.debug(`VsTestPath: ${vsTestPath}`);
-            let args = (0, getArguments_1.getArguments)();
+            const args = (0, getArguments_1.getArguments)();
             core.debug(`Arguments: ${args}`);
-            let testTool = `${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`;
             core.info(`Running tests...`);
-            core.info(testTool);
-            yield exec.exec(testTool);
+            yield exec.exec(`${vsTestPath} "${testFiles.join('" "')}" ${args} /Logger:TRX`);
         }
         catch (err) {
             core.setFailed(err.message);
@@ -5247,8 +5245,8 @@ const search_1 = __webpack_require__(575);
 function getTestAssemblies() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let searchFolder = core.getInput('searchFolder');
-            let testAssembly = core.getInput('testAssembly');
+            const searchFolder = core.getInput('searchFolder');
+            const testAssembly = core.getInput('testAssembly');
             core.debug(`Pattern to search test assemblies: ${searchFolder + testAssembly}`);
             const searchResult = yield (0, search_1.findFilesToUpload)(searchFolder + testAssembly);
             return searchResult.filesToUpload;

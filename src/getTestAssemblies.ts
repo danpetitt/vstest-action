@@ -3,15 +3,15 @@ import {findFilesToUpload} from './search';
 
 export async function getTestAssemblies(): Promise<string[]> {
   try {
-    let searchFolder = core.getInput('searchFolder')
-    let testAssembly = core.getInput('testAssembly')
+    const searchFolder = core.getInput('searchFolder');
+    const testAssembly = core.getInput('testAssembly');
 
-    core.debug(`Pattern to search test assemblies: ${searchFolder + testAssembly}`)
-    const searchResult = await findFilesToUpload(searchFolder + testAssembly)
+    core.debug(`Pattern to search test assemblies: ${searchFolder + testAssembly}`);
+    const searchResult = await findFilesToUpload(searchFolder + testAssembly);
     
-    return searchResult.filesToUpload
+    return searchResult.filesToUpload;
   } catch (err: unknown) {
-    core.setFailed((err as Error).message)
+    core.setFailed((err as Error).message);
   }
-  return []
+  return [];
 }
