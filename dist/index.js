@@ -99979,6 +99979,7 @@ async function uploadArtifact() {
         );
       }
       const filename = replaceTags(inputs.artifactName);
+      core2.info(`Uploading artifact to ${filename}`);
       const artifactClient = new import_artifact.DefaultArtifactClient();
       const options = {
         compressionLevel: 1
@@ -100005,9 +100006,9 @@ async function uploadArtifact() {
   }
 }
 function replaceTags(value) {
-  const dt = (/* @__PURE__ */ new Date()).toISOString();
-  const [date, time] = dt.split("T");
-  return value.replace(/\{\{current-date\}\}/g, date).replace(/\{\{current-time\}\}/g, time.substring(0, 8));
+  const dt = /* @__PURE__ */ new Date();
+  const [date, time] = dt.toISOString().split("T");
+  return value.replace(/\{\{\s*current_date\s*\}\}/g, date).replace(/\{\{\s*current_time\s*\}\}/g, time.substring(0, 8).replace(/:/g, "-")).replace(/\{\{\s*current_epoch\s*\}\}/g, dt.getTime().toString());
 }
 
 // src/getTestAssemblies.ts
